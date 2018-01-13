@@ -1,5 +1,6 @@
 from django.utils import timezone
 
+from .adapters import CsvFileResponseAdapter, PdfFileResponseAdapter
 from .models import Currency
 from .services import request_updated_rates
 
@@ -13,6 +14,7 @@ class CurrenciesHelper():
 
     def __init__(self):
         self.supported_currencies = ['USD', 'BRL', 'EUR', 'BTC']
+        self.supported_file_formats = ['csv', 'pdf']
         self.default_currency = 'USD'
 
     """
@@ -21,6 +23,13 @@ class CurrenciesHelper():
     """
     def is_currency_supported(self, currency_name):
         return self.supported_currencies.__contains__(currency_name)
+
+    """
+    Dado o formato de um arquivo como parâmetro, retorna se o formato é 
+    suportado pelo sistema ou não. 
+    """
+    def is_file_format_supported(self, format):
+        return self.supported_file_formats.__contains__(format)
 
     """
     Dado uma lista de parâmetros, então extrai e retorna esses parâmetros do
@@ -106,3 +115,13 @@ class CurrenciesHelper():
     """
     def convert_value(self, value, rate):
         return float(value) * float(rate)
+
+    """
+    Dado o tipo do arquivo, então instancia o adapter correto para exportar o
+    conteúdo da conversão de valores.
+    """
+    def get_file_response_adapter(self, type):
+        if type == 'csv':
+            return CsvFileResponseAdapter(type)
+        elif type == 'pdf':
+            return PdfFileResponseAdapter(type)
