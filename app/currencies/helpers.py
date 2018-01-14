@@ -1,5 +1,6 @@
+import pytz
+
 from django.utils import timezone
-from django.utils import formats
 
 from .adapters import CsvFileResponseAdapter, PdfFileResponseAdapter
 from .models import Currency
@@ -28,7 +29,7 @@ class CurrenciesHelper():
             c = {
                 'name': currency.name,
                 'rate': currency.rate,
-                'last_update': formats.date_format(currency.last_update, 'd/m/Y'),
+                'last_update': self.format_date_using_timezone(currency.last_update),
                 'rate_brl': rate,
                 'price_brl': self.convert_value(1, rate)
             }
@@ -165,3 +166,14 @@ class CurrenciesHelper():
             return CsvFileResponseAdapter()
         elif type == 'pdf':
             return PdfFileResponseAdapter()
+
+    def get_last_time_rates_were_updated(self):
+        default_currency = Currency.objects.get(name=self.default_currency)
+        return self.format_date_using_timezone(default_currency.last_update)
+
+    def format_date_using_timezone(self, date):
+        fmt = '%d/%m/%Y %H:%M'
+        utc = date.replace(tzinfo=pytz.UTC)
+        local = utc.astimezone(timezone.get_current_timezone())
+
+        return local.strftime(fmt)

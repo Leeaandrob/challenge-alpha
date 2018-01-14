@@ -31,17 +31,18 @@ def convert(request):
     """
     from_currency, to_currency, value = helper.get_params_from_request(request, ['from', 'to', 'value'])
     if (not helper.assert_request_params([from_currency, to_currency, value])):
-        return JsonResponse({"erro": "Os parâmetros from, to e value são obrigatórios."})
+        return JsonResponse(status=500, data={"erro": "Os parâmetros from, to e value são obrigatórios."})
 
     if not (helper.is_currency_supported(from_currency) and helper.is_currency_supported(to_currency)):
-        return JsonResponse({"erro": "As moedas suportadas são USD, BRL, EUR e BTC."})
+        return JsonResponse(status=500, data={"erro": "As moedas suportadas são USD, BRL, EUR e BTC."})
 
     rate = helper.get_current_conversion_rate(from_currency, to_currency)
     return JsonResponse({
         "from": from_currency,
         "to": to_currency,
         "originalValue": float(value),
-        "convertedValue": helper.convert_value(value, rate)
+        "convertedValue": helper.convert_value(value, rate),
+        "ratesLatesUpdatedAt": helper.get_last_time_rates_were_updated()
     })
 
 @require_http_methods(['GET'])
@@ -70,11 +71,16 @@ def convert_and_download(request):
     if not (helper.is_file_format_supported(type)):
         return JsonResponse({"erro": f"Os formatos de arquivo suportados são {helper.supported_file_formats}."})
 
-    rate = helper.get_current_conversion_rate(from_currency, to_currency)
-
     file_adapter = helper.get_file_response_adapter(type)
     file_adapter.create_file()
-    file_adapter.write_header(['From currency', 'To currency', 'Original Value', 'Converted Value'])
-    file_adapter.write_content([from_currency, to_currency, float(value), helper.convert_value(value, rate)])
+
+    header = ['From currency', 'To currency', 'Original Value', 'Converted Value', 'Last time rates were updated']
+    file_adapter.write_header(header)
+
+    rate = helper.get_current_conversion_rate(from_currency, to_currency)
+    converted_value = helper.convert_value(value, rate)
+    last_time_rates_were_updated = helper.get_last_time_rates_were_updated()
+    content = [from_currency, to_currency, float(value), converted_value, last_time_rates_were_updated]
+    file_adapter.write_content(content)
 
     return file_adapter.get_response()

@@ -124,7 +124,7 @@ class PdfFileResponseAdapter(AbstractFileResponseAdapter):
     def write_content(self, content):
         y = 700
         for c in content:
-            self.write_row(200, y, str(c))
+            self.write_row(300, y, str(c))
             y -= 50
 
     def get_response(self):
