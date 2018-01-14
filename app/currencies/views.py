@@ -34,7 +34,7 @@ def convert(request):
         return JsonResponse(status=500, data={"erro": "Os parâmetros from, to e value são obrigatórios."})
 
     if not (helper.is_currency_supported(from_currency) and helper.is_currency_supported(to_currency)):
-        return JsonResponse(status=500, data={"erro": "As moedas suportadas são USD, BRL, EUR e BTC."})
+        return JsonResponse(status=500, data={"erro": f"As moedas suportadas são {helper.supported_currencies}"})
 
     rate = helper.get_current_conversion_rate(from_currency, to_currency)
     return JsonResponse({
@@ -63,13 +63,13 @@ def convert_and_download(request):
     """
     from_currency, to_currency, value, type = helper.get_params_from_request(request, ['from', 'to', 'value', 'type'])
     if (not helper.assert_request_params([from_currency, to_currency, value, type])):
-        return JsonResponse({"erro": "Os parâmetros from, to, value e type são obrigatórios."})
+        return JsonResponse(status=500, data={"erro": "Os parâmetros from, to, value e type são obrigatórios."})
 
     if not (helper.is_currency_supported(from_currency) and helper.is_currency_supported(to_currency)):
-        return JsonResponse({"erro": f"As moedas suportadas são {helper.supported_currencies}"})
+        return JsonResponse(status=500, data={"erro": f"As moedas suportadas são {helper.supported_currencies}"})
 
     if not (helper.is_file_format_supported(type)):
-        return JsonResponse({"erro": f"Os formatos de arquivo suportados são {helper.supported_file_formats}."})
+        return JsonResponse(status=500, data={"erro": f"Os formatos de arquivo suportados são {helper.supported_file_formats}."})
 
     file_adapter = helper.get_file_response_adapter(type)
     file_adapter.create_file()

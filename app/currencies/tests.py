@@ -252,7 +252,7 @@ class CurrenciesViewsTest(TestCase):
         self.assertEqual(response.status_code, 500)
         self.assertJSONEqual(
             str(response.content, encoding='utf8'),
-            {'erro': 'As moedas suportadas são USD, BRL, EUR e BTC.'}
+            {'erro': f"As moedas suportadas são {helper.supported_currencies}"}
         )
 
     def test_convert_view_convert_values_succesfully(self):
@@ -271,3 +271,43 @@ class CurrenciesViewsTest(TestCase):
                 'ratesLatesUpdatedAt': helper.get_last_time_rates_were_updated()
             }
         )
+
+    def test_convert_and_download_view_without_required_params(self):
+        helper = CurrenciesHelper()
+        setup_db(helper)
+
+        response = self.client.get('/currencies/convertAndDownload/')
+        self.assertEqual(response.status_code, 500)
+        self.assertJSONEqual(
+            str(response.content, encoding='utf8'),
+            {'erro': 'Os parâmetros from, to, value e type são obrigatórios.'}
+        )
+
+    def test_convert_and_download_view_with_currency_not_supported(self):
+        helper = CurrenciesHelper()
+        setup_db(helper)
+
+        response = self.client.get('/currencies/convertAndDownload/?from=BRL&to=UUS&value=100&type=csv')
+        self.assertEqual(response.status_code, 500)
+        self.assertJSONEqual(
+            str(response.content, encoding='utf8'),
+            {'erro': f"As moedas suportadas são {helper.supported_currencies}"}
+        )
+
+    def test_convert_and_download_view_with_file_type_not_supported(self):
+        helper = CurrenciesHelper()
+        setup_db(helper)
+
+        response = self.client.get('/currencies/convertAndDownload/?from=BRL&to=USD&value=100&type=txt')
+        self.assertEqual(response.status_code, 500)
+        self.assertJSONEqual(
+            str(response.content, encoding='utf8'),
+            {'erro': f"Os formatos de arquivo suportados são {helper.supported_file_formats}."}
+        )
+
+    def test_convert_and_download_view_successfuly(self):
+        helper = CurrenciesHelper()
+        setup_db(helper)
+
+        response = self.client.get('/currencies/convertAndDownload/?from=USD&to=EUR&value=100&type=pdf')
+        self.assertEqual(response.status_code, 200)
