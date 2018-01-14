@@ -14,4 +14,4 @@ class Currency(models.Model):
 
     def was_updated_recently(self):
         now = timezone.now()
-        return now - datetime.timedelta(days=1) <= self.last_update <= now
+        return now.day == self.last_update.day
