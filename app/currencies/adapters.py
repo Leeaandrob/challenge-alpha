@@ -76,6 +76,9 @@ class CsvFileResponseAdapter(AbstractFileResponseAdapter):
     Classe que implementa os métodos necessários para enviar um csv como response.
     """
 
+    def __init__(self):
+        AbstractFileResponseAdapter.__init__(self, 'csv')
+
     def get_mime_type(self):
         return 'text/csv'
 
@@ -99,6 +102,9 @@ class PdfFileResponseAdapter(AbstractFileResponseAdapter):
     """
     Classe que implementa os métodos necessários para enviar um pdf como response.
     """
+
+    def __init__(self):
+        AbstractFileResponseAdapter.__init__(self, 'pdf')
 
     def get_mime_type(self):
         return 'application/pdf'

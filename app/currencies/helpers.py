@@ -162,6 +162,6 @@ class CurrenciesHelper():
         :return: adapter para o tipo de arquivo escolhido
         """
         if type == 'csv':
-            return CsvFileResponseAdapter(type)
+            return CsvFileResponseAdapter()
         elif type == 'pdf':
-            return PdfFileResponseAdapter(type)
+            return PdfFileResponseAdapter()
