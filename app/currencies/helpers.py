@@ -152,7 +152,7 @@ class CurrenciesHelper():
         :param rate: taxa de conversão
         :return float: valor convertido
         """
-        return round(float(value) * float(rate), 4)
+        return round(float(value) * float(rate), 9)
 
     def get_file_response_adapter(self, type):
         """
