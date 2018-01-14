@@ -45,6 +45,7 @@ class CurrenciesHelperTest(TestCase):
         response = HttpResponse()
         response.json = MagicMock(return_value={
             'quotes': {
+                'USDUSD': 1,
                 'USDEUR': 2,
                 'USDBRL': 3,
                 'USDBTC': 4

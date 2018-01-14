@@ -111,7 +111,8 @@ class CurrenciesHelper():
         dessas taxas no banco, então atualiza o valor de conversão e a data de
         atualização. Caso contrário, insere as moedas no banco.
         """
-        rates = request_updated_rates()
+        currencies_str = ','.join(self.supported_currencies)
+        rates = request_updated_rates(self.default_currency, currencies_str)
         if not len(Currency.objects.all()):
             self.init_rates(rates)
         else:
@@ -123,8 +124,6 @@ class CurrenciesHelper():
         :param rates: taxas de conversão entre a moeda de lastro e as demais
         moedas.
         """
-        default_currency = Currency(name=self.default_currency, rate=1, last_update=timezone.now())
-        default_currency.save()
         for key, value in rates.items():
             currency_name = key[-3:]
             currency = Currency(name=currency_name, rate=value, last_update=timezone.now())
@@ -135,9 +134,6 @@ class CurrenciesHelper():
         Atualiza o valor de conversão das moedas no banco de dados.
         :param rates: taxas de conversão entre a moeda de lastro e as demais
         """
-        default_currency = Currency.objects.get(name=self.default_currency)
-        default_currency.last_update = timezone.now()
-        default_currency.save()
         for key, value in rates.items():
             currency_name = key[-3:]
             currency = Currency.objects.get(name=currency_name)

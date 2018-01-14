@@ -1,11 +1,13 @@
+import os
 import requests
 
-def request_updated_rates():
+
+def request_updated_rates(default_currency, currencies):
     url = 'http://apilayer.net/api/live'
     params = {
-        'access_key': '31fbc24c4aca6f7a9a6c2ae83a1a304b',
-        'currencies': 'EUR,BRL,BTC',
-        'source': 'USD',
+        'access_key': os.environ.get('CURR_LAYER_ACCESS_KEY'),
+        'currencies': currencies,
+        'source': default_currency,
         'format': 1
     }
     response = requests.get(url, params=params)
