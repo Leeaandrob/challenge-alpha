@@ -1,4 +1,5 @@
 # Currency Watcher - Desafio Alpha
+API para conversão monetária.
 
 ## Sumário
 
