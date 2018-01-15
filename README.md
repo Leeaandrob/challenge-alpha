@@ -34,16 +34,15 @@ __Backend__
 
 * [Django 2.0.1](https://www.djangoproject.com)
 
-A escolha do framework _Django_ se deu pela sua simplicidade, comodidade, agilidade no desenvolvimento e escalabilidade 
-que o mesmo proporciona. O framework propõe um modelo para estruturação do projeto de forma que as camadas model, view 
-e controller sejam construídas de forma desacoplada. Além disso, ao iniciar um projeto com _Django_, o projeto já vem 
-com o setup pronto para construção de testes unitários e um mini servidor web, o que torna o desenvolvimento do 
-aplicativo mais simples, pois neste momento o desenvolvedor não precisa se preocupar com a configuração de um servidor 
-para a aplicação. 
+A escolha do framework _Django_ se deu pela sua simplicidade, comodidade, agilidade no desenvolvimento e alta 
+escalabilidade. O framework propõe um modelo para estruturação do projeto de maneira que as camadas model, view 
+e controller sejam construídas de forma desacoplada. Além disso, ao iniciar um projeto com este framework, temos acesso
+a um utilitário de linha de comando (manage.py), que proporciona funcionalidades como execução de testes unitários, 
+migrações de banco de dados e a execução de um mini servidor web.
 
 * [PostgreSQL](https://www.postgresql.org)
 
-O banco de dados _PostgreSQL_ vem se destacando por ser um banco de dados muito robusto e veloz. Além disso, é uma 
+O banco de dados _PostgreSQL_ tem se destacado por ser um banco de dados muito robusto e veloz. Além disso, é uma 
 ferramenta free e que tem uma comunidade muito vasta.
 
 __Frontend__
@@ -52,14 +51,15 @@ __Frontend__
 * [Font Awesome](https://fontawesome.com/)
 
 Esses dois frameworks foram utilizados nos layouts da aplicação. O _Bootstrap 4_ tem a sua própria proposta de layout,
-contendo estilos, componentes e um sistema de grid. Já o _Font Awesome_ possui uma vasta variedade de ícones, que podem
-ser utilzados para melhorar a usabilidade das páginas web. Os dois frameworks são free. 
+contendo estilos, componentes e um sistema de grid. Além disso, é possível realizar customizações nas cores e estilos.
+Já o _Font Awesome_ possui uma vasta variedade de ícones, que podem ser utilzados para melhorar a usabilidade das 
+páginas web. Os dois frameworks são free. 
 
 ## Dependências de ambiente
 
-* Python >= 3.6 - Visitar página de [download](https://www.python.org/downloads/)
+* Python >= 3.6 - Visite a página para [download](https://www.python.org/downloads/)
 * Pipenv ```pip install pipenv```
-* PostgreSQL >= 9.3 - Visitar página de [download](https://www.postgresql.org/download/)
+* PostgreSQL >= 9.3 - Visite a página para [download](https://www.postgresql.org/download/)
 
 ## Instalando a aplicação localmente
 
