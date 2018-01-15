@@ -21,12 +21,38 @@ As moedas suportadas são:
 - EUR
 - BTC
 
-
 Ex: USD para BRL, USD para BTC, EUR para BRL, etc...
 
-A aplicação foi construída utilizando o framework [Django 2.0.1](https://www.djangoproject.com) e banco de dados 
-[PostgreSQL](https://www.postgresql.org). O layout dos templates utiliza os frameworks 
-[Bootstrap 4](https://v4-alpha.getbootstrap.com/) e [Font Awesome](https://fontawesome.com/).
+__Nota__: Não foi possível realizar a implementação para a moeda _ETH_, pois não foi encontrado um webservice que 
+retorne essa informação. O valor da cotação dessa moeda poderia ser obtido através do método _screen scrapping_, porém 
+foi decidido deixá-la para um segundo momento e focar nas outras moedas. 
+
+A aplicação foi construída utilizando a seguinte stack
+
+__Backend__
+
+* [Django 2.0.1](https://www.djangoproject.com)
+
+A escolha do framework _Django_ se deu pela sua simplicidade, comodidade, agilidade no desenvolvimento e escalabilidade 
+que o mesmo proporciona. O framework propõe um modelo para estruturação do projeto de forma que as camadas model, view 
+e controller sejam construídas de forma desacoplada. Além disso, ao iniciar um projeto com _Django_, o projeto já vem 
+com o setup pronto para construção de testes unitários e um mini servidor web, o que torna o desenvolvimento do 
+aplicativo mais simples, pois neste momento o desenvolvedor não precisa se preocupar com a configuração de um servidor 
+para a aplicação. 
+
+* [PostgreSQL](https://www.postgresql.org)
+
+O banco de dados _PostgreSQL_ vem se destacando por ser um banco de dados muito robusto e veloz. Além disso, é uma 
+ferramenta free e que tem uma comunidade muito vasta.
+
+__Frontend__
+
+* [Bootstrap 4](https://v4-alpha.getbootstrap.com/)
+* [Font Awesome](https://fontawesome.com/)
+
+Esses dois frameworks foram utilizados nos layouts da aplicação. O _Bootstrap 4_ tem a sua própria proposta de layout,
+contendo estilos, componentes e um sistema de grid. Já o _Font Awesome_ possui uma vasta variedade de ícones, que podem
+ser utilzados para melhorar a usabilidade das páginas web. Os dois frameworks são free. 
 
 ## Dependências de ambiente
 
@@ -36,8 +62,8 @@ A aplicação foi construída utilizando o framework [Django 2.0.1](https://www.
 
 ## Instalando a aplicação localmente
 
-Assumindo que as [Dependências de ambiente]() já tenham sido resolvidas, siga os seguintes passos para instalar e rodar
-a aplicação localmente.
+Assumindo que as [Dependências de ambiente](https://github.com/hengling/challenge-alpha#dependências-de-ambiente) já 
+tenham sido resolvidas, siga os seguintes passos para instalar e rodar a aplicação localmente.
 
 Defina as seguintes variáveis de ambiente:
 
@@ -77,7 +103,7 @@ _TODO_
 ## Acessando a aplicação no Heroku
 
 A aplicação também foi liberada utilizando o provedor de cloud computing [Heroku](https://heroku.com) e pode ser
-acesada pelo endereço [https://amh-currency-watcher.herokuapp.com/currencies/](https://amh-currency-watcher.herokuapp.com/currencies/)
+acesada pelo endereço [https://amh-currency-watcher.herokuapp.com/currencies](https://amh-currency-watcher.herokuapp.com/currencies)
 
 
 ## API - Serviços disponíveis
@@ -113,7 +139,7 @@ Resposta
 __Serviço para conversão de valores com retorno em arquivo__
 
 ```
-GET /convertAndDownload?from=BTC&to=EUR&amount=123.45&type=csv
+GET /convertAndDownload?from=USD&to=EUR&amount=123.45&type=csv
 ```
 
 Parâmetros
