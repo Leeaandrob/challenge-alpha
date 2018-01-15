@@ -1,17 +1,17 @@
-## Currency Watcher - Desafio Alpha
+# Currency Watcher - Desafio Alpha
 
-#### Sumário
+## Sumário
 
-* [Introdução]()
-* [Dependências de ambiente]()
-* [Instalando a aplicação localmente]()
-* [Instalando a aplicação com container Docker]()
-* [Acessando a aplicação no Heroku]()
-* [API - Serviços disponíveis]()
+* [Introdução](https://github.com/hengling/challenge-alpha#introdução)
+* [Dependências de ambiente](https://github.com/hengling/challenge-alpha#dependências-de-ambiente)
+* [Instalando a aplicação localmente](https://github.com/hengling/challenge-alpha#instalando-a-aplicação-localmente)
+* [Instalando a aplicação como container Docker](https://github.com/hengling/challenge-alpha#instalando-a-aplicação-como-container-docker)
+* [Acessando a aplicação no Heroku](https://github.com/hengling/challenge-alpha#acessando-a-aplicação-no-heroku)
+* [API - Serviços disponíveis](https://github.com/hengling/challenge-alpha#api---serviços-dispon%C3%ADveis)
 
-#### Introdução
+## Introdução
 
-_Current Watcher_ é uma API para conversão monetária. As taxas de conversão entre as moedas suportadas pela aplicação 
+_Currency Watcher_ é uma API para conversão monetária. As taxas de conversão entre as moedas suportadas pela aplicação 
 são atualizadas uma vez por dia e depois armazenadas no banco de dados. Essas taxas de conversão são consumidas da
 API [Currency Layer](https://currencylayer.com). 
 
@@ -28,7 +28,7 @@ A aplicação foi construída utilizando o framework [Django 2.0.1](https://www.
 [PostgreSQL](https://www.postgresql.org). O layout dos templates utiliza os frameworks 
 [Bootstrap 4](https://v4-alpha.getbootstrap.com/) e [Font Awesome](https://fontawesome.com/).
 
-#### Dependências de ambiente
+## Dependências de ambiente
 
 * Python >= 3.6 - Visitar página de [download](https://www.python.org/downloads/)
 * Pipenv ```pip install pipenv```
@@ -70,17 +70,17 @@ python manage.py runserver
 Se as configurações padrão não tiverem sido alteradas, o sistema estará disponível no endereço 
 [http://127.0.0.1:8000/currencies/](http://127.0.0.1:8000/currencies/)
 
-#### Instalando a aplicação com container Docker
+## Instalando a aplicação como container Docker
 
 _TODO_
 
-#### Acessando a aplicação no Heroku
+## Acessando a aplicação no Heroku
 
 A aplicação também foi liberada utilizando o provedor de cloud computing [Heroku](https://heroku.com) e pode ser
 acesada pelo endereço [https://amh-currency-watcher.herokuapp.com/currencies/](https://amh-currency-watcher.herokuapp.com/currencies/)
 
 
-#### API - Serviços disponíveis
+## API - Serviços disponíveis
 
 __Serviço para conversão de valores com retorno em Json__
 ```
