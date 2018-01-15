@@ -1,58 +1,138 @@
-# Desafio Alpha
+## Currency Watcher - Desafio Alpha
 
-Construa uma API, que responda JSON, para conversão monetária. Ela deve ter uma moeda de lastro (USD) e fazer conversões entre diferentes moedas com cotações de verdade e atuais.
+#### Sumário
 
-A API deve converter entre as seguintes moedas:
+* [Introdução]()
+* [Dependências de ambiente]()
+* [Instalando a aplicação localmente]()
+* [Instalando a aplicação com container Docker]()
+* [Acessando a aplicação no Heroku]()
+* [API - Serviços disponíveis]()
+
+#### Introdução
+
+_Current Watcher_ é uma API para conversão monetária. As taxas de conversão entre as moedas suportadas pela aplicação 
+são atualizadas uma vez por dia e depois armazenadas no banco de dados. Essas taxas de conversão são consumidas da
+API [Currency Layer](https://currencylayer.com). 
+
+As moedas suportadas são:
 - USD
 - BRL
 - EUR
 - BTC
-- ETH
 
 
-Ex: USD para BRL, USD para BTC, ETH para BRL, etc...
+Ex: USD para BRL, USD para BTC, EUR para BRL, etc...
 
-A primeira requisição deve receber como parâmetros: A moeda de origem, o valor a ser convertido e a moeda final.
+A aplicação foi construída utilizando o framework [Django 2.0.1](https://www.djangoproject.com) e banco de dados 
+[PostgreSQL](https://www.postgresql.org). O layout dos templates utiliza os frameworks 
+[Bootstrap 4](https://v4-alpha.getbootstrap.com/) e [Font Awesome](https://fontawesome.com/).
 
-Ex: `?from=BTC&to=EUR&amount=123.45`
+#### Dependências de ambiente
 
-A segunda requisição deve receber um get e gerar um download conforme mime-type passado como parâmetro: A moeda de origem, o valor a ser convertido, a moeda final e o mime-type.
+* Python >= 3.6 - Visitar página de [download](https://www.python.org/downloads/)
+* Pipenv ```pip install pipenv```
+* PostgreSQL >= 9.3 - Visitar página de [download](https://www.postgresql.org/download/)
 
-Ex: `?from=BTC&to=EUR&amount=123.45&type=csv`
+## Instalando a aplicação localmente
 
-A terceira requisição é construir um listview que vai listar a cotação do dia das moedas aqui pedidas.
+Assumindo que as [Dependências de ambiente]() já tenham sido resolvidas, siga os seguintes passos para instalar e rodar
+a aplicação localmente.
 
-Você precisa usar:
-- Python
+Defina as seguintes variáveis de ambiente:
 
-Você pode usar qualquer _framework_. Se a sua escolha for por um _framework_ que resulte em _boilerplate code_, por favor assinale no README qual pedaço de código foi escrito por você. Quanto mais código feito por você, mais conteúdo teremos para avaliar.
+| Variável              | Descrição                                                                     | Exemplo                                  |
+| --------------------- | ----------------------------------------------------------------------------- | ---------------------------------------- |
+| CURR_LAYER_ACCESS_KEY | Chave de acesso para a API que fornece a taxa de conversão das moedas.        | 52671idbvc526eqq34f                      |
+| DATABASE_URL          | Url de acesso ao banco que contém host, porta, usuário, senha e nome do banco | postgres://user:passwd@host:port/db_name |
 
-## Requisitos
-- Forkar esse desafio e criar o seu projeto (ou workspace) usando a sua versão desse repositório, tão logo acabe o desafio, submeta um *pull request*.
-- O código precisa rodar em macOS ou Ubuntu (preferencialmente como container Docker)
-- Para executar seu código, deve ser preciso apenas rodar os seguintes comandos:
-  - git clone $seu-fork
-  - cd $seu-fork
-  - comando para instalar dependências
-  - comando para executar a aplicação
-- A API precisa suportar um volume de 1000 requisições por segundo em um teste de estresse.
-- Por fim você precisa fazer o deploy dessa aplicação no heroku.
+Clone o repositório e entre na pasta do projeto
+```
+git clone https://github.com/hengling/challenge-alpha.git
+cd challenge-alpha
+```
+
+Instale as dependências do projeto
+```
+pipenv install
+```
+
+Execute os testes unitários
+```
+python manage.py test
+```
+
+Execute o programa
+```
+python manage.py runserver
+```
+
+Se as configurações padrão não tiverem sido alteradas, o sistema estará disponível no endereço 
+[http://127.0.0.1:8000/currencies/](http://127.0.0.1:8000/currencies/)
+
+#### Instalando a aplicação com container Docker
+
+_TODO_
+
+#### Acessando a aplicação no Heroku
+
+A aplicação também foi liberada utilizando o provedor de cloud computing [Heroku](https://heroku.com) e pode ser
+acesada pelo endereço [https://amh-currency-watcher.herokuapp.com/currencies/](https://amh-currency-watcher.herokuapp.com/currencies/)
 
 
-## Critério de avaliação
+#### API - Serviços disponíveis
 
-- **Organização do código**: Separação de módulos, view e model, back-end e front-end
-- **Clareza**: O README explica de forma resumida qual é o problema e como pode rodar a aplicação?
-- **Acertividade**: A aplicação está fazendo o que é esperado? Se tem algo faltando, o README explica o porquê?
-- **Legibilidade do código** (incluindo comentários)
-- **Segurança**: Existe alguma vulnerabilidade clara?
-- **Cobertura de testes** (Não esperamos cobertura completa)
-- **Histórico de commits** (estrutura e qualidade)
-- **UX**: A interface é de fácil uso e auto-explicativa? A API é intuitiva?
-- **Escolhas técnicas**: A escolha das bibliotecas, banco de dados, arquitetura, etc, é a melhor escolha para a aplicação?
+__Serviço para conversão de valores com retorno em Json__
+```
+GET /convert?from=USD&to=EUR&amount=123.45
+```
 
-## Dúvidas
+Parâmetros
 
-Quaisquer dúvidas que você venha a ter, consulte as [_issues_](https://github.com/Leeaandrob/challenge-alpha/issues) para ver se alguém já não a fez e caso você não ache sua resposta, abra você mesmo uma nova issue!
+* from: moeda de origem
+* to: moeda final
+* amount: valor a ser convertido
 
-Boa sorte e boa viagem! ;)
+Resposta
+```
+{
+    "from": "USD",
+    "to": "EUR",
+    "originalValue": 123.45,
+    "convertedValue": 101.2038162,
+    "ratesLastUpdatedAt": "14/01/2018 21:24"
+}
+```
+
+* from: moeda de origem
+* to: moeda final
+* originalValue: valor na moeda de origem
+* convertedValue: valor na moeda final
+* ratesLastUpdatedAt: data da última atualização das taxas de conversão 
+
+__Serviço para conversão de valores com retorno em arquivo__
+
+```
+GET /convertAndDownload?from=BTC&to=EUR&amount=123.45&type=csv
+```
+
+Parâmetros
+
+* from: moeda de origem
+* to: moeda final
+* amount: valor a ser convertido
+* type: formato do arquivo (csv | pdf)
+
+Resposta
+
+Download do arquivo com as informações.
+
+__Listagem das moedas com a cotação atual (em BRL)__
+
+```
+GET /currencies
+```
+
+Resposta
+
+Página com a listagem das moedas, cotação em _BRL_ e data da última atualização das taxas de conversão.

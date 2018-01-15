@@ -242,14 +242,14 @@ class CurrenciesViewsTest(TestCase):
         self.assertEqual(response.status_code, 500)
         self.assertJSONEqual(
             str(response.content, encoding='utf8'),
-            {'erro': 'Os parâmetros from, to e value são obrigatórios.'}
+            {'erro': 'Os parâmetros from, to e amount são obrigatórios.'}
         )
 
     def test_convert_view_with_currency_not_supported(self):
         helper = CurrenciesHelper()
         setup_db(helper)
 
-        response = self.client.get('/currencies/convert/?from=BRL&to=UUS&value=100')
+        response = self.client.get('/currencies/convert/?from=BRL&to=UUS&amount=100')
         self.assertEqual(response.status_code, 500)
         self.assertJSONEqual(
             str(response.content, encoding='utf8'),
@@ -260,7 +260,7 @@ class CurrenciesViewsTest(TestCase):
         helper = CurrenciesHelper()
         setup_db(helper)
 
-        response = self.client.get('/currencies/convert/?from=USD&to=EUR&value=100')
+        response = self.client.get('/currencies/convert/?from=USD&to=EUR&amount=100')
         self.assertEqual(response.status_code, 200)
         self.assertJSONEqual(
             str(response.content, encoding='utf8'),
@@ -269,7 +269,7 @@ class CurrenciesViewsTest(TestCase):
                 'to': 'EUR',
                 'originalValue': 100.0,
                 'convertedValue': 200.0,
-                'ratesLatesUpdatedAt': helper.get_last_time_rates_were_updated()
+                'ratesLastUpdatedAt': helper.get_last_time_rates_were_updated()
             }
         )
 
@@ -281,14 +281,14 @@ class CurrenciesViewsTest(TestCase):
         self.assertEqual(response.status_code, 500)
         self.assertJSONEqual(
             str(response.content, encoding='utf8'),
-            {'erro': 'Os parâmetros from, to, value e type são obrigatórios.'}
+            {'erro': 'Os parâmetros from, to, amount e type são obrigatórios.'}
         )
 
     def test_convert_and_download_view_with_currency_not_supported(self):
         helper = CurrenciesHelper()
         setup_db(helper)
 
-        response = self.client.get('/currencies/convertAndDownload/?from=BRL&to=UUS&value=100&type=csv')
+        response = self.client.get('/currencies/convertAndDownload/?from=BRL&to=UUS&amount=100&type=csv')
         self.assertEqual(response.status_code, 500)
         self.assertJSONEqual(
             str(response.content, encoding='utf8'),
@@ -299,7 +299,7 @@ class CurrenciesViewsTest(TestCase):
         helper = CurrenciesHelper()
         setup_db(helper)
 
-        response = self.client.get('/currencies/convertAndDownload/?from=BRL&to=USD&value=100&type=txt')
+        response = self.client.get('/currencies/convertAndDownload/?from=BRL&to=USD&amount=100&type=txt')
         self.assertEqual(response.status_code, 500)
         self.assertJSONEqual(
             str(response.content, encoding='utf8'),
@@ -310,5 +310,5 @@ class CurrenciesViewsTest(TestCase):
         helper = CurrenciesHelper()
         setup_db(helper)
 
-        response = self.client.get('/currencies/convertAndDownload/?from=USD&to=EUR&value=100&type=pdf')
+        response = self.client.get('/currencies/convertAndDownload/?from=USD&to=EUR&amount=100&type=pdf')
         self.assertEqual(response.status_code, 200)

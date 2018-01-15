@@ -29,9 +29,9 @@ def convert(request):
     :return JsonResponse: Json contendo a moeda de origem, a moeda de destino,
     o valor orignal e o valor convertido.
     """
-    from_currency, to_currency, value = helper.get_params_from_request(request, ['from', 'to', 'value'])
+    from_currency, to_currency, value = helper.get_params_from_request(request, ['from', 'to', 'amount'])
     if (not helper.assert_request_params([from_currency, to_currency, value])):
-        return JsonResponse(status=500, data={"erro": "Os parâmetros from, to e value são obrigatórios."})
+        return JsonResponse(status=500, data={"erro": "Os parâmetros from, to e amount são obrigatórios."})
 
     if not (helper.is_currency_supported(from_currency) and helper.is_currency_supported(to_currency)):
         return JsonResponse(status=500, data={"erro": f"As moedas suportadas são {helper.supported_currencies}"})
@@ -42,7 +42,7 @@ def convert(request):
         "to": to_currency,
         "originalValue": float(value),
         "convertedValue": helper.convert_value(value, rate),
-        "ratesLatesUpdatedAt": helper.get_last_time_rates_were_updated()
+        "ratesLastUpdatedAt": helper.get_last_time_rates_were_updated()
     })
 
 @require_http_methods(['GET'])
@@ -61,9 +61,9 @@ def convert_and_download(request):
     :return HttpResponse: reponse contendo o arquivo com as informações
     processadas.
     """
-    from_currency, to_currency, value, type = helper.get_params_from_request(request, ['from', 'to', 'value', 'type'])
+    from_currency, to_currency, value, type = helper.get_params_from_request(request, ['from', 'to', 'amount', 'type'])
     if (not helper.assert_request_params([from_currency, to_currency, value, type])):
-        return JsonResponse(status=500, data={"erro": "Os parâmetros from, to, value e type são obrigatórios."})
+        return JsonResponse(status=500, data={"erro": "Os parâmetros from, to, amount e type são obrigatórios."})
 
     if not (helper.is_currency_supported(from_currency) and helper.is_currency_supported(to_currency)):
         return JsonResponse(status=500, data={"erro": f"As moedas suportadas são {helper.supported_currencies}"})
