@@ -1,58 +1,187 @@
-# Desafio Alpha
+# Currency Watcher - Desafio Alpha
+API para conversão monetária.
 
-Construa uma API, que responda JSON, para conversão monetária. Ela deve ter uma moeda de lastro (USD) e fazer conversões entre diferentes moedas com cotações de verdade e atuais.
+## Sumário
 
-A API deve converter entre as seguintes moedas:
+* [Introdução](https://github.com/hengling/challenge-alpha#introdução)
+* [Dependências de ambiente](https://github.com/hengling/challenge-alpha#dependências-de-ambiente)
+* [Instalando a aplicação localmente](https://github.com/hengling/challenge-alpha#instalando-a-aplicação-localmente)
+* [Instalando a aplicação como container Docker](https://github.com/hengling/challenge-alpha#instalando-a-aplicação-como-container-docker)
+* [Acessando a aplicação no Heroku](https://github.com/hengling/challenge-alpha#acessando-a-aplicação-no-heroku)
+* [API - Serviços disponíveis](https://github.com/hengling/challenge-alpha#api---serviços-dispon%C3%ADveis)
+
+## Introdução
+
+_Currency Watcher_ é uma API para conversão monetária. As taxas de conversão entre as moedas suportadas pela aplicação 
+são atualizadas uma vez por dia e depois armazenadas no banco de dados. Essas taxas de conversão são consumidas da
+API [Currency Layer](https://currencylayer.com). 
+
+As moedas suportadas são:
 - USD
 - BRL
 - EUR
 - BTC
-- ETH
+
+Ex: USD para BRL, USD para BTC, EUR para BRL, etc...
+
+__Nota__: Não foi possível realizar a implementação para a moeda _ETH_, pois não foi encontrado um webservice que 
+retorne essa informação. O valor da cotação dessa moeda poderia ser obtido através do método _screen scrapping_, porém 
+foi decidido deixá-la para um segundo momento e focar nas outras moedas. 
+
+A aplicação foi construída utilizando a seguinte stack
+
+__Backend__
+
+* [Django 2.0.1](https://www.djangoproject.com)
+
+A escolha do framework _Django_ se deu pela sua simplicidade, comodidade, agilidade no desenvolvimento e alta 
+escalabilidade. O framework propõe um modelo para estruturação do projeto de maneira que as camadas model, view 
+e controller sejam construídas de forma desacoplada. Além disso, ao iniciar um projeto com este framework, temos acesso
+a um utilitário de linha de comando (manage.py), que proporciona funcionalidades como execução de testes unitários, 
+migrações de banco de dados e a execução de um mini servidor web.
+
+* [PostgreSQL](https://www.postgresql.org)
+
+O banco de dados _PostgreSQL_ tem se destacado por ser um banco de dados muito robusto e veloz. Além disso, é uma 
+ferramenta free e que tem uma comunidade muito vasta.
+
+__Frontend__
+
+* [Bootstrap 4](https://v4-alpha.getbootstrap.com/)
+* [Font Awesome](https://fontawesome.com/)
+
+Esses dois frameworks foram utilizados nos layouts da aplicação. O _Bootstrap 4_ tem a sua própria proposta de layout,
+contendo estilos, componentes e um sistema de grid. Além disso, é possível realizar customizações nas cores e estilos.
+Já o _Font Awesome_ possui uma vasta variedade de ícones, que podem ser utilzados para melhorar a usabilidade das 
+páginas web. Os dois frameworks são free. 
+
+## Dependências de ambiente
+
+* Python >= 3.6 - Visite a página para [download](https://www.python.org/downloads/)
+* Pipenv ```pip install pipenv```
+* PostgreSQL >= 9.3 - Visite a página para [download](https://www.postgresql.org/download/)
+
+## Instalando a aplicação localmente
+
+Assumindo que as [Dependências de ambiente](https://github.com/hengling/challenge-alpha#dependências-de-ambiente) já 
+tenham sido resolvidas, siga os seguintes passos para instalar e rodar a aplicação localmente.
+
+Defina as seguintes variáveis de ambiente:
+
+| Variável              | Descrição                                                                     | Exemplo                                  |
+| --------------------- | ----------------------------------------------------------------------------- | ---------------------------------------- |
+| CURR_LAYER_ACCESS_KEY | Chave de acesso para a API que fornece a taxa de conversão das moedas.        | 52671idbvc526eqq34f                      |
+| DATABASE_URL          | Url de acesso ao banco que contém host, porta, usuário, senha e nome do banco | postgres://user:passwd@host:port/db_name |
+
+Clone o repositório e entre na pasta do projeto
+```
+git clone https://github.com/hengling/challenge-alpha.git
+cd challenge-alpha
+```
+
+Instale as dependências do projeto
+```
+pipenv install
+```
+
+Execute os testes unitários
+```
+python manage.py test
+```
+
+Execute o programa
+```
+python manage.py runserver
+```
+
+Se as configurações padrão não tiverem sido alteradas, o sistema estará disponível no endereço 
+[http://127.0.0.1:8000/currencies/](http://127.0.0.1:8000/currencies/)
+
+## Instalando a aplicação como container Docker
+
+Assumindo que as ferramentas [Docker](https://www.docker.com) e 
+[Docker Compose](https://docs.docker.com/compose/install/) já instalados, siga os seguintes passos para rodar a
+aplicação como container docker:
+
+Construa a imagem
+```
+docker-compose build
+```
+
+Inicialize o container em background
+```
+docker-compose up -d
+```
+
+Após inicialização, o sistema estará disponível no endereço 
+[http://127.0.0.1:8000/currencies/](http://127.0.0.1:8000/currencies/).
+
+Rodadando os testes
+
+```
+docker exec container_id python manage.py test
+```
+__Nota__: _lembre-se de substituir container_id pelo id do seu container_
+
+## Acessando a aplicação no Heroku
+
+A aplicação também foi liberada utilizando o provedor de cloud computing [Heroku](https://heroku.com) e pode ser
+acesada pelo endereço [https://amh-currency-watcher.herokuapp.com/currencies](https://amh-currency-watcher.herokuapp.com/currencies)
 
 
-Ex: USD para BRL, USD para BTC, ETH para BRL, etc...
+## API - Serviços disponíveis
 
-A primeira requisição deve receber como parâmetros: A moeda de origem, o valor a ser convertido e a moeda final.
+__Serviço para conversão de valores com retorno em Json__
+```
+GET /convert?from=USD&to=EUR&amount=123.45
+```
 
-Ex: `?from=BTC&to=EUR&amount=123.45`
+Parâmetros
 
-A segunda requisição deve receber um get e gerar um download conforme mime-type passado como parâmetro: A moeda de origem, o valor a ser convertido, a moeda final e o mime-type.
+* from: moeda de origem
+* to: moeda final
+* amount: valor a ser convertido
 
-Ex: `?from=BTC&to=EUR&amount=123.45&type=csv`
+Resposta
+```
+{
+    "from": "USD",
+    "to": "EUR",
+    "originalValue": 123.45,
+    "convertedValue": 101.2038162,
+    "ratesLastUpdatedAt": "14/01/2018 21:24"
+}
+```
 
-A terceira requisição é construir um listview que vai listar a cotação do dia das moedas aqui pedidas.
+* from: moeda de origem
+* to: moeda final
+* originalValue: valor na moeda de origem
+* convertedValue: valor na moeda final
+* ratesLastUpdatedAt: data da última atualização das taxas de conversão 
 
-Você precisa usar:
-- Python
+__Serviço para conversão de valores com retorno em arquivo__
 
-Você pode usar qualquer _framework_. Se a sua escolha for por um _framework_ que resulte em _boilerplate code_, por favor assinale no README qual pedaço de código foi escrito por você. Quanto mais código feito por você, mais conteúdo teremos para avaliar.
+```
+GET /convertAndDownload?from=USD&to=EUR&amount=123.45&type=csv
+```
 
-## Requisitos
-- Forkar esse desafio e criar o seu projeto (ou workspace) usando a sua versão desse repositório, tão logo acabe o desafio, submeta um *pull request*.
-- O código precisa rodar em macOS ou Ubuntu (preferencialmente como container Docker)
-- Para executar seu código, deve ser preciso apenas rodar os seguintes comandos:
-  - git clone $seu-fork
-  - cd $seu-fork
-  - comando para instalar dependências
-  - comando para executar a aplicação
-- A API precisa suportar um volume de 1000 requisições por segundo em um teste de estresse.
-- Por fim você precisa fazer o deploy dessa aplicação no heroku.
+Parâmetros
 
+* from: moeda de origem
+* to: moeda final
+* amount: valor a ser convertido
+* type: formato do arquivo (csv | pdf)
 
-## Critério de avaliação
+Resposta
 
-- **Organização do código**: Separação de módulos, view e model, back-end e front-end
-- **Clareza**: O README explica de forma resumida qual é o problema e como pode rodar a aplicação?
-- **Acertividade**: A aplicação está fazendo o que é esperado? Se tem algo faltando, o README explica o porquê?
-- **Legibilidade do código** (incluindo comentários)
-- **Segurança**: Existe alguma vulnerabilidade clara?
-- **Cobertura de testes** (Não esperamos cobertura completa)
-- **Histórico de commits** (estrutura e qualidade)
-- **UX**: A interface é de fácil uso e auto-explicativa? A API é intuitiva?
-- **Escolhas técnicas**: A escolha das bibliotecas, banco de dados, arquitetura, etc, é a melhor escolha para a aplicação?
+Download do arquivo com as informações.
 
-## Dúvidas
+__Listagem das moedas com a cotação atual (em BRL)__
 
-Quaisquer dúvidas que você venha a ter, consulte as [_issues_](https://github.com/Leeaandrob/challenge-alpha/issues) para ver se alguém já não a fez e caso você não ache sua resposta, abra você mesmo uma nova issue!
+```
+GET /currencies
+```
 
-Boa sorte e boa viagem! ;)
+Resposta
+
+Página com a listagem das moedas, cotação em _BRL_ e data da última atualização das taxas de conversão.
