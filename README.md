@@ -99,7 +99,29 @@ Se as configurações padrão não tiverem sido alteradas, o sistema estará dis
 
 ## Instalando a aplicação como container Docker
 
-_TODO_
+Assumindo que as ferramentas [Docker](https://www.docker.com) e 
+[Docker Compose](https://docs.docker.com/compose/install/) já instalados, siga os seguintes passos para rodar a
+aplicação como container docker:
+
+Construa a imagem
+```
+docker-compose build
+```
+
+Inicialize o container em background
+```
+docker-compose up -d
+```
+
+Após inicialização, o sistema estará disponível no endereço 
+[http://127.0.0.1:8000/currencies/](http://127.0.0.1:8000/currencies/).
+
+Rodadando os testes
+
+```
+docker exec container_id python manage.py test
+```
+__Nota__: _lembre-se de substituir container_id pelo id do seu container_
 
 ## Acessando a aplicação no Heroku
 
